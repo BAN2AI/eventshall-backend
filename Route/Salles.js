@@ -1,6 +1,19 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
+const multer = require('multer')
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './uploads/')
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+      cb(null, file.fieldname + '-' + uniqueSuffix)
+    }
+  })
+
+const upload = multer({storage : storage})
 
 const Salles = require('../Models/Salles')
 
@@ -25,7 +38,11 @@ router.get('/', (req, res) => {
    
 })
 
-router.post('/', (req, res) => {
+router.post('/images', upload.array('images'), (req, res) => {
+    // console.log(req.files)
+})
+
+router.post('/', upload.array('images'), (req, res) => {
 
     Salles.findOne({nom : req.body.nom}, (err, salle) => {
 
