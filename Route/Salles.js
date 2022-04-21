@@ -5,7 +5,7 @@ const multer = require('multer')
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, './uploads/')
+      cb(null, './users/')
     },
     filename: function (req, file, cb) {
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
@@ -40,10 +40,13 @@ router.get('/', (req, res) => {
 
 router.post('/images', upload.array('images'), (req, res) => {
     // console.log(req.files)
+    // faire la mise a jour
 })
 
 router.post('/', upload.array('images'), (req, res) => {
 
+    // pas de condition
+    // console.log(req.files)
     Salles.findOne({nom : req.body.nom}, (err, salle) => {
 
         if(!salle){
